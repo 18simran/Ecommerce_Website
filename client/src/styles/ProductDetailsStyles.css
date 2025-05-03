@@ -1,0 +1,97 @@
+.product-details {
+  margin-top: 50px !important;
+}
+
+.product-details h1 {
+  color: #036080;
+}
+.product-details img {
+  cursor: pointer;
+}
+
+.product-details-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-detail-btn {
+  background-color: #036080;
+  color: white;
+  border-color: #036080;
+}
+
+.product-detail-btn:hover {
+  background-color: rgb(4, 76, 100);
+  color: white;
+}
+
+.product-details-info p {
+  margin-bottom: 20px !important;
+}
+
+.product-details-content {
+  position: relative;
+}
+
+.product-details-content .like-button {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 25px;
+  margin: 0 !important;
+}
+
+.product-details-content p span {
+  font-weight: bold;
+  color: #036080;
+}
+
+.similar-products .card {
+  background-color: rgba(128, 128, 128, 0.097);
+  width: 18rem;
+}
+
+.similar-products .card-name-price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.similar-products .card-price {
+  color: green;
+  font-weight: 600;
+}
+
+.similar-products button {
+  border-radius: 0;
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  border-color: #036080;
+}
+
+.similar-products .card-text {
+  color: rgb(90, 89, 89);
+  font-size: 16px;
+}
+
+.similar-products .card {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.similar-products .card-title {
+  font-weight: 500;
+  color: #036080;
+}
+
+.similar-products .card:hover {
+  transform: scale(1.02);
+}
+
+.similar-products .card-img-top {
+  height: 300px !important;
+}

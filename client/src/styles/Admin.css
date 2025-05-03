@@ -1,0 +1,43 @@
+p {
+  font-size: 16px;
+}
+p span {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d4d5e;
+}
+.list-group-item.active {
+  background-color: #0f7b83;
+  border-color: #0f7b83;
+}
+
+.create-product-btn,
+.update-product-btn,
+.create-category-btn {
+  background-color: #0f7b83;
+  color: white;
+}
+.create-product-btn:hover,
+.update-product-btn:hover,
+.create-category-btn:hover {
+  background-color: #078d96;
+  color: white;
+}
+
+/* User Dasgboard */
+.user-dashboard p span {
+  color: #056168;
+}
+
+.products-card {
+  width: 15rem;
+}
+
+.products-card img {
+  height: 300px;
+}
+
+.products-card p {
+  font-size: 16px;
+  font-weight: 500;
+}

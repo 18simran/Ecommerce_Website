@@ -1,0 +1,80 @@
+.footer {
+  background-color: rgb(1, 76, 101);
+  color: white;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+  margin-top: 40px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footer-section {
+  flex: 1 1 250px;
+}
+
+.footer-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.social-icons {
+  margin-bottom: 15px;
+}
+
+.social-icons a {
+  color: #fff;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.subscribe-btn {
+  margin-top: 15px;
+  background-color: #f14e4e;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.subscribe-btn:hover {
+  background-color: #d13d3d;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid rgb(5, 117, 154);
+  padding-top: 20px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.footer-links a {
+  color: #ccc;
+  margin: 0 8px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.bbb-logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
