@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "./../components/Layout/Layout";
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Layout title={"Privacy Policy"}>
       <div className="row privacy-policy col-md-10 offset-md-2 offset-sm-1 mt-3">
@@ -104,33 +107,3 @@ const About = () => {
 };
 
 export default About;
-
-// import React from "react";
-// import Layout from "./../components/Layout/Layout";
-
-// const Policy = () => {
-//   return (
-//     <Layout>
-//       <div className="row contactus ">
-//         <div className="col-md-6 ">
-//           <img
-//             src="/images/contact.jpg"
-//             alt="contactus"
-//             style={{ width: "100%",padding:"5%",marginLeft:"5%"}}
-//           />
-//         </div>
-//         <div className="col-md-4">
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//           <p>add privacy policy</p>
-//         </div>
-//       </div>
-//     </Layout>
-//   );
-// };
-
-// export default Policy;

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Layout from "./../../components/Layout/Layout";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
 import { useAuth } from "../../context/auth";
 import API from "../../api";
+import axios from "axios";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,16 +19,20 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const res = await axios.post("/api/v1/auth/login", {
-      const res = await API.post("/auth/login", { email, password });
+      const res = await axios.post("/api/v1/auth/login", { email, password });
+
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
-        setAuth({
-          ...auth,
+
+        // Correct structure to save
+        const loginData = {
           user: res.data.user,
           token: res.data.token,
-        });
-        localStorage.setItem("auth", JSON.stringify(res.data));
+        };
+        console.log(res.data.user);
+        setAuth(loginData);
+        localStorage.setItem("auth", JSON.stringify(loginData));
+
         navigate(location.state || "/");
       } else {
         toast.error(res.data.message);
@@ -37,9 +42,10 @@ const Login = () => {
       toast.error("Something went wrong");
     }
   };
+
   return (
-    <Layout title="Register - Ecommer App">
-      <div className="form-container " style={{ minHeight: "90vh" }}>
+    <Layout title="Login - Ecommer App">
+      <div className="form-container" style={{ minHeight: "90vh" }}>
         <form onSubmit={handleSubmit}>
           <h4 className="title">Login Form</h4>
 
@@ -50,8 +56,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
-              id="exampleInputEmail1"
-              placeholder="Enter Your Email "
+              placeholder="Enter Your Email"
               required
             />
           </div>
@@ -61,7 +66,6 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-control"
-              id="exampleInputPassword1"
               placeholder="Enter Your Password"
               required
             />
@@ -70,9 +74,7 @@ const Login = () => {
             <button
               type="button"
               className="btn forgot-btn"
-              onClick={() => {
-                navigate("/forgot-password");
-              }}
+              onClick={() => navigate("/forgot-password")}
             >
               Forgot Password
             </button>

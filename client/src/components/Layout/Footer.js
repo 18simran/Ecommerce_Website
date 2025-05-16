@@ -1,4 +1,5 @@
-import React from "react";
+import { useAuth } from "../../context/auth";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,18 +11,50 @@ import {
   faTiktok,
 } from "@fortawesome/free-brands-svg-icons";
 import "../../styles/Footer.css";
-// const Footer = () => {
-//   return (
-//     <div className="footer">
-//       <h1 className="text-center ">All Right Reserved &copy; AllNest</h1>
-//       <p className="text-center mt-3">
-//         <Link to="/about">About</Link> | <Link to="/contact">Contact</Link> |{" "}
-//         <Link to="/policy">Privacy Policy</Link>
-//       </p>
-//     </div>
-//   );
-// };
+import toast from "react-hot-toast";
+import React, { useState } from "react";
+
 const Footer = () => {
+  const [auth] = useAuth();
+  const navigate = useNavigate();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email && phone) {
+      setMessage("🎉 Subscribed successfully!");
+      setIsSubscribed(true);
+      setEmail("");
+      setPhone("");
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setClosing(false);
+    }, 300);
+  };
+
+  const handleShippingClick = (e) => {
+    e.preventDefault();
+    if (auth?.token) {
+      navigate("/dashboard/user/orders");
+      window.scrollTo(0, 0);
+    } else {
+      toast.error("Please login or register first");
+      navigate("/login", { state: "/dashboard/user/orders" });
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -29,7 +62,7 @@ const Footer = () => {
           <h3>ABOUT US</h3>
           <ul>
             <li>
-              <a href="#">Our Story</a>
+              <Link to="/about">Our Story</Link>
             </li>
             <li>
               <a href="#">Affiliate Program</a>
@@ -53,10 +86,14 @@ const Footer = () => {
               <a href="#">Returns & Exchanges</a>
             </li>
             <li>
-              <a href="#">Shipping Information</a>
+              <a href="#" onClick={handleShippingClick}>
+                Shipping Information
+              </a>
             </li>
             <li>
-              <a href="#">Track Your Order</a>
+              <a href="#" onClick={handleShippingClick}>
+                Track Your Order
+              </a>
             </li>
 
             <li>
@@ -85,12 +122,50 @@ const Footer = () => {
               <FontAwesomeIcon icon={faInstagram} />
             </a>
           </div>
-          <p>
-            Want $20 Off? Sign up for our Newsletter.
-            <br />
-            Sign up for SMS alerts and be the first to know!
-          </p>
-          <button className="subscribe-btn"> Subscribe Now</button>
+          <div>
+            <p>
+              Want $20 Off? Sign up for our Newsletter.
+              <br />
+              Sign up for SMS alerts and be the first to know!
+            </p>
+
+            <button
+              className="subscribe-btn"
+              onClick={() => {
+                if (!isSubscribed) setShowModal(true);
+              }}
+              disabled={isSubscribed}
+            >
+              {isSubscribed ? "Subscribed Already" : "Subscribe Now"}
+            </button>
+            {showModal && (
+              <div className={`modal ${closing ? "closing" : ""}`}>
+                <form className="modal-content" onSubmit={handleSubscribe}>
+                  <h3>Subscribe</h3>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Enter your phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                  <button type="submit">Submit</button>
+                  <button type="button" onClick={handleClose}>
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {message && <p>{message}</p>}
+          </div>
         </div>
       </div>
 

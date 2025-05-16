@@ -22,7 +22,7 @@ router.post(
 
 //update category
 router.put(
-  "/update-category/:id", //id actually used for update the specific category by their id
+  "/update-category/:id",
   requireSignIn,
   isAdmin,
   updateCategoryController

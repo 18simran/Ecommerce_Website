@@ -19,10 +19,10 @@
   border-radius: 10px;
   transition: all 0.5s ease-in-out;
   cursor: pointer;
+  margin: 2rem 3rem;
 }
 
 .category .card:hover {
-  transform: scale(1.022);
   box-shadow: 7px 6px 10px 0px #b8b6b6b8;
 }
 

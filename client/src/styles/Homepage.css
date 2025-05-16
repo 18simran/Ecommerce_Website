@@ -10,6 +10,7 @@ body {
 }
 .banner-img {
   margin-top: 0px;
+  cursor: pointer;
 }
 .home-page h1 {
   color: rgb(1 60 80 / 50%);
@@ -130,6 +131,17 @@ filters
   color: #013c50;
 }
 
+.navbar-brand {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(4, 90, 118);
+  font-family: "Pacifico", cursive;
+}
+
+.navbar-brand:hover {
+  text-shadow: 0 0 5px #036080;
+  color: #036080;
+}
 .nav-item {
   margin-left: 5px;
   margin-right: 5px;
@@ -139,4 +151,42 @@ filters
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 
+circle layout of some famous categories*/
+.category-layout {
+  margin-bottom: 5rem;
+  margin-top: 2rem;
+}
+
+.category-layout h2 {
+  color: rgb(1 60 80 / 70%);
+  font-family: "Playfair Display", serif;
+}
+
+.category-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.category-item {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.category-item p {
+  color: rgb(1, 60, 80);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.category-img:hover {
+  box-shadow: 0 0 10px rgb(1, 12, 16, 0.5);
 }

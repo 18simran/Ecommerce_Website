@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "./../components/Layout/Layout";
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Layout title={"About us - ALLNEST"}>
       <div className="row contact-us col-md-10 offset-md-1 ">

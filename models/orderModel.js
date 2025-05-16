@@ -8,10 +8,15 @@ const orderSchema = new mongoose.Schema(
         ref: "Products",
       },
     ],
-    payment: {},
+    payment: {
+      paymentId: String,
+      amount: Number,
+      currency: String,
+      success: Boolean,
+    },
     buyer: {
       type: mongoose.ObjectId,
-      ref: "users",
+      ref: "User",
     },
     status: {
       type: String,

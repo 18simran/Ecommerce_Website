@@ -11,7 +11,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 //payment gateway
-var gateway = new braintree.BraintreeGateway({
+
+const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
@@ -20,59 +21,52 @@ var gateway = new braintree.BraintreeGateway({
 
 export const createProductController = async (req, res) => {
   try {
-    const { name, slug, description, price, category, quantity, shipping } =
+    const { name, description, price, category, quantity, shipping } =
       req.fields;
     const { photo } = req.files;
 
-    //validation
-    switch (true) {
-      case !name:
-        return res.status(500).send({
-          error: "Name is required",
-        });
-      case !description:
-        return res.status(500).send({
-          error: "Description is required",
-        });
-      case !price:
-        return res.status(500).send({
-          error: "Price is required",
-        });
-      case !category:
-        return res.status(500).send({
-          error: "Category is required",
-        });
-      case !quantity:
-        return res.status(500).send({
-          error: "Quantity is required",
-        });
-      case photo && photo.size > 1000000:
-        return res.status(500).send({
-          error: "Photo is required and should be less then 1mb",
-        });
+    const errors = [];
+
+    if (!name) errors.push("Name is required");
+    if (!description) errors.push("Description is required");
+    if (!price) errors.push("Price is required");
+    if (!category) errors.push("Category is required");
+    if (!quantity) errors.push("Quantity is required");
+    if (photo && photo.size > 1000000)
+      errors.push("Photo must be less than 1MB");
+
+    if (errors.length) {
+      return res.status(400).send({ errors });
     }
-    const products = new productModel({ ...req.fields, slug: slugify(name) });
+
+    const newProduct = new productModel({
+      ...req.fields,
+      slug: slugify(name),
+    });
+
     if (photo) {
-      products.photo.data = fs.readFileSync(photo.path);
-      products.photo.contentType = photo.type;
+      const photoData = await fs.promises.readFile(photo.path); // Async file read
+      newProduct.photo.data = photoData;
+      newProduct.photo.contentType = photo.type;
     }
-    await products.save();
+
+    await newProduct.save();
+
     res.status(201).send({
       success: true,
-      messsage: "Product created successfully",
-      products,
+      message: "Product created successfully",
+      product: newProduct,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({
       success: false,
+      message: "Error creating product",
       error,
-      messsage: "Error in crearing product",
     });
   }
 };
 
-//get all products
 export const getProductController = async (req, res) => {
   try {
     const products = await productModel
@@ -355,47 +349,54 @@ export const braintreeTokenController = async (req, res) => {
   try {
     gateway.clientToken.generate({}, function (err, response) {
       if (err) {
-        res.status(500).send(err);
+        return res.status(500).send({ error: "Error generating client token" });
       } else {
         res.send(response);
       }
     });
   } catch (error) {
     console.log(error);
+    res.status(500).send({ error: "Server error" });
   }
 };
 
-//payment
+
 export const brainTreePaymentController = async (req, res) => {
   try {
-    const { nonce, cart } = req.body;
-    let total = 0;
-    cart.map((i) => {
-      total += i.price;
-    });
-    let newTransaction = gateway.transaction.sale(
+    const { nonce, cart } = req.body; // nonce from Braintree frontend
+    console.log("Received cart:", cart); // Log cart to verify structure
+
+    // Process the payment with Braintree
+    gateway.transaction.sale(
       {
-        amount: total,
+        amount: cart.reduce((acc, item) => acc + item.price, 0).toString(), // Convert to string
         paymentMethodNonce: nonce,
         options: {
-          submitForSettlement: true,
+          submitForSettlement: true, // Automatically settle the transaction
         },
       },
-      function (error, result) {
-        if (result) {
-          const order = new orderModel({
-            products: cart,
-            payment: result,
-            buyer: req.user._id,
-          }).save();
-          res.json({ ok: true });
-        } else {
-          res.status(500).send(error);
+      async (err, result) => {
+        if (err || !result.success) {
+          console.log(err);
+          return res.status(500).send({ error: "Payment failed" });
         }
+
+        // On successful payment, create an order in the database
+        const order = await new orderModel({
+          products: cart,
+          payment: result,
+          buyer: req.user._id,
+        }).save();
+
+        console.log("Order saved:", order);
+        res.json({ success: true, message: "Order placed successfully!" });
       }
     );
   } catch (error) {
     console.log(error);
+    res
+      .status(500)
+      .send({ error: "Error processing payment and placing order" });
   }
 };
 

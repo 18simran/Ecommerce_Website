@@ -65,6 +65,7 @@ const Search = () => {
                   <button
                     class="btn btn-primary ms-1"
                     onClick={() => navigate(`/product/${p.slug}`)}
+                    style={{ marginRight: "12px" }}
                   >
                     More Details
                   </button>
@@ -72,12 +73,17 @@ const Search = () => {
                     class="btn btn-secondary ms-1"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
+                      if (!cart.find((item) => item._id === p._id)) {
+                        const updatedCart = [...cart, p];
+                        setCart(updatedCart);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify(updatedCart)
+                        );
+                        toast.success("Item Added to cart");
+                      } else {
+                        toast("Item already in cart");
+                      }
                     }}
                   >
                     Add To Cart

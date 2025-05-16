@@ -13,3 +13,8 @@
   cursor: pointer;
   margin: 10px;
 }
+
+.card-body p,
+.card-body h5 {
+  color: #055069;
+}
